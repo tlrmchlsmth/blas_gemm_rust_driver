@@ -92,7 +92,7 @@ fn test() {
         let n_reps = 5;
         let (mkl_time, mkl_err) = test_blas_dgemm(m, n, k, &mut flusher, n_reps);
 
-        println!("{}\t{}\t{}\t{}\t{}", 
+        println!("{}\t{}\t{}\t{}{}", 
                  m, n, k,
                  format!("{: <13.5}", util::gflops(m,n,k,mkl_time)),
                  format!("{: <15.5e}", mkl_err.sqrt()));
