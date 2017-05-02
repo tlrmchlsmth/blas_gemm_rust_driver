@@ -84,7 +84,7 @@ fn test() {
     let mut flusher : Vec<f64> = Vec::with_capacity(flusher_len);
     for _ in 0..flusher_len { flusher.push(0.0); }
 
-    println!("m\tn\tk\t{: <13}{: <15}", "goto", "l3b", "goto", "l3b");
+    println!("m\tn\tk\t{: <13}{: <15}", "mkl", "mkl");
     for index in 01..129 {
         let size = index*32;
         let (m, n, k) = (size, size, size);
