@@ -1,5 +1,5 @@
 [package]
-name = "mkl_driver"
+name = "mkl_rust_driver"
 version = "0.1.0"
 authors = ["Tyler Michael Smith <tms@cs.utexas.edu>"]
 build = "build.rs"
