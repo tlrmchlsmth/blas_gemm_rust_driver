@@ -85,8 +85,8 @@ fn test() {
     for _ in 0..flusher_len { flusher.push(0.0); }
 
     println!("m\tn\tk\t{: <13}{: <15}", "mkl", "mkl");
-    for index in 01..129 {
-        let size = index*32;
+    for index in 01..81 {
+        let size = index*50;
         let (m, n, k) = (size, size, size);
 
         let n_reps = 5;
