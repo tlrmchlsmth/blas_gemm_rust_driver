@@ -7,9 +7,12 @@ extern crate momms;
 use std::time::{Instant};
 use libc::{c_double, int64_t, c_char};
 use std::ffi::CString;
-use momms::matrix::{Mat, Scalar, Matrix, RoCM};
+use momms::matrix::{Mat, Matrix, RoCM};
 use momms::util;
 
+//Note:
+//MKL exports dgemm,
+//and BLIS exports dgemm_, but not dgemm, so dgemm ends up being MKL's dgemm implementation
 
 extern{
     fn dgemm( transa: *const c_char, transb: *const c_char,
@@ -21,7 +24,7 @@ extern{
                c: *mut c_double, ldc: *const int64_t );
 }
 
-pub fn blas_dgemm( a: &mut Matrix<f64>, b: &mut Matrix<f64>, c: &mut Matrix<f64> ) 
+pub fn mkl_dgemm( a: &mut Matrix<f64>, b: &mut Matrix<f64>, c: &mut Matrix<f64> ) 
 {
     unsafe{ 
         let transa = CString::new("N").unwrap();
@@ -51,7 +54,7 @@ pub fn blas_dgemm( a: &mut Matrix<f64>, b: &mut Matrix<f64>, c: &mut Matrix<f64>
     }
 }
 
-fn test_blas_dgemm ( m:usize, n: usize, k: usize, flusher: &mut Vec<f64>, n_reps: usize ) -> (f64, f64) 
+fn test_mkl ( m:usize, n: usize, k: usize, flusher: &mut Vec<f64>, n_reps: usize ) -> (f64, f64) 
 {
     let mut best_time: f64 = 9999999999.0;
     let mut worst_err: f64 = 0.0;
@@ -70,7 +73,7 @@ fn test_blas_dgemm ( m:usize, n: usize, k: usize, flusher: &mut Vec<f64>, n_reps
             
         //Time and run algorithm
         let start = Instant::now();
-        blas_dgemm( &mut a, &mut b, &mut c);
+        mkl_dgemm( &mut a, &mut b, &mut c);
         best_time = best_time.min(util::dur_seconds(start));
         let err = util::test_c_eq_a_b( &mut a, &mut b, &mut c);
         worst_err = worst_err.max(err);
@@ -90,7 +93,7 @@ fn test() {
         let (m, n, k) = (size, size, size);
 
         let n_reps = 5;
-        let (mkl_time, mkl_err) = test_blas_dgemm(m, n, k, &mut flusher, n_reps);
+        let (mkl_time, mkl_err) = test_mkl(m, n, k, &mut flusher, n_reps);
 
         println!("{}\t{}\t{}\t{}{}", 
                  m, n, k,
