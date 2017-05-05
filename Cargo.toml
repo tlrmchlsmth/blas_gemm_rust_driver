@@ -6,3 +6,11 @@ build = "build.rs"
 
 [dependencies]
 momms = { git = "https://github.com/tlrmchlsmth/momms" }
+
+[[bin]]
+name = "mkl_rust_driver"
+path = "src/mkl_driver.rs"
+
+[[bin]]
+name = "blis_rust_driver"
+path = "src/blis_driver.rs"
